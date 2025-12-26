@@ -196,7 +196,7 @@ export default function LinearTransformerDemo() {
 
   // --- Animation Loop ---
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     if (isPlaying) {
       interval = setInterval(() => {
         setStep(s => {
