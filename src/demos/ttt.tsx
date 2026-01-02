@@ -238,38 +238,6 @@ export default function TTTDemo() {
 
       <main className="max-w-7xl mx-auto p-4 space-y-6">
         
-        {/* Objective Section */}
-        <section className="bg-indigo-900 text-white rounded-2xl p-6 shadow-xl border border-indigo-700 overflow-hidden relative">
-           <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
-              <Target size={120} />
-           </div>
-           <div className="relative z-10">
-              <div className="flex items-center gap-2 mb-4">
-                <Target className="text-indigo-300" size={20} />
-                <h2 className="text-sm font-bold uppercase tracking-widest text-indigo-200">Test-Time Objective (Self-Supervision)</h2>
-              </div>
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                <div>
-                  <p className="text-sm leading-relaxed text-indigo-100 mb-4">
-                    In TTT-Linear, the hidden state <MathFormula tex="W" /> is a weight matrix. At each step <MathFormula tex="t" />, we perform gradient descent to solve a <strong>Reconstruction Task</strong>: 
-                    predicting the value (V) from the key (K).
-                  </p>
-                  <div className="bg-indigo-950/50 p-4 rounded-xl border border-indigo-500/30">
-                    <p className="text-xs font-mono mb-2 text-indigo-300 uppercase tracking-tighter font-bold">Self-supervised Loss:</p>
-                    <div className="text-lg font-serif">
-                       <MathFormula tex="\mathcal{L}(W; x_t) = \| W x_t - z_t \|^2" />
-                    </div>
-                  </div>
-                </div>
-                <div className="text-xs text-indigo-200/80 space-y-3 bg-white/5 p-4 rounded-xl">
-                   <p><strong className="text-white">Goal:</strong> Find weights <MathFormula tex="W" /> that best map Key space to Value space for the current token.</p>
-                   <p><strong className="text-white">Mechanism:</strong> Every state update <MathFormula tex="W_t" /> is literally a training step. We use <strong>Batch GD</strong>, meaning we always calculate the gradient relative to a fixed starting point <MathFormula tex="W_0" /> to maintain linearity.</p>
-                   <p><strong className="text-white">Result:</strong> The "memory" of the RNN is stored in the weights of this tiny internal model.</p>
-                </div>
-              </div>
-           </div>
-        </section>
-
         {/* Unrolled RNN View */}
         <section className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 overflow-x-auto">
           <div className="flex items-center gap-2 mb-6 border-b pb-3">
@@ -446,6 +414,38 @@ export default function TTTDemo() {
                 <span className="text-emerald-400 font-bold uppercase text-[9px]">Linear Attention Formulation</span>
                 <span>{'y_t = \\sum_{i=1}^t v_i (k_i^\\top q_t)'}</span>
                 <span className="text-slate-500 mt-1 italic">Equivalent to matrix-vector associative memory.</span>
+              </div>
+           </div>
+        </section>
+
+        {/* Objective Section */}
+        <section className="bg-indigo-900 text-white rounded-2xl p-6 shadow-xl border border-indigo-700 overflow-hidden relative">
+           <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+              <Target size={120} />
+           </div>
+           <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-4">
+                <Target className="text-indigo-300" size={20} />
+                <h2 className="text-sm font-bold uppercase tracking-widest text-indigo-200">Test-Time Objective (Self-Supervision)</h2>
+              </div>
+              <div className="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                  <p className="text-sm leading-relaxed text-indigo-100 mb-4">
+                    In TTT-Linear, the hidden state <MathFormula tex="W" /> is a weight matrix. At each step <MathFormula tex="t" />, we perform gradient descent to solve a <strong>Reconstruction Task</strong>: 
+                    predicting the value (V) from the key (K).
+                  </p>
+                  <div className="bg-indigo-950/50 p-4 rounded-xl border border-indigo-500/30">
+                    <p className="text-xs font-mono mb-2 text-indigo-300 uppercase tracking-tighter font-bold">Self-supervised Loss:</p>
+                    <div className="text-lg font-serif">
+                       <MathFormula tex="\mathcal{L}(W; x_t) = \| W x_t - z_t \|^2" />
+                    </div>
+                  </div>
+                </div>
+                <div className="text-xs text-indigo-200/80 space-y-3 bg-white/5 p-4 rounded-xl">
+                   <p><strong className="text-white">Goal:</strong> Find weights <MathFormula tex="W" /> that best map Key space to Value space for the current token.</p>
+                   <p><strong className="text-white">Mechanism:</strong> Every state update <MathFormula tex="W_t" /> is literally a training step. We use <strong>Batch GD</strong>, meaning we always calculate the gradient relative to a fixed starting point <MathFormula tex="W_0" /> to maintain linearity.</p>
+                   <p><strong className="text-white">Result:</strong> The "memory" of the RNN is stored in the weights of this tiny internal model.</p>
+                </div>
               </div>
            </div>
         </section>
