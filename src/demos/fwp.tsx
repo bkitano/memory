@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import 'katex/dist/katex.min.css';
+import { BlockMath, InlineMath } from 'react-katex';
 import { Play, Pause, SkipBack, ArrowRight, RefreshCw, Info, Calculator, Database, BrainCircuit } from 'lucide-react';
 
 // --- Types & Constants ---
@@ -280,8 +282,8 @@ export default function LinearTransformerDemo() {
                     />
                   </div>
                   {/* Outer product visual hint */}
-                  <div className="mt-2 text-[10px] text-slate-400 font-mono">
-                    Add: V{i+1} ⊗ ϕ(K{i+1})
+                  <div className="mt-2 text-[10px] text-slate-400">
+                    <InlineMath math={`v_{${i + 1}} \\otimes \\phi(k_{${i + 1}})`} />
                   </div>
                 </div>
               ))}
@@ -310,9 +312,9 @@ export default function LinearTransformerDemo() {
             <div className="flex flex-col items-center gap-6">
               {/* Formula */}
               <div className="bg-slate-50 p-3 rounded border border-slate-100 text-center">
-                 <div className="font-mono text-sm text-slate-700">
-                   M = <span className="text-purple-600">∑</span> (V<sub>i</sub> ⊗ ϕ(K<sub>i</sub>))
-                 </div>
+                 <div className="text-sm text-slate-700">
+                   <BlockMath math={'M = \\sum_i (v_i \\otimes \\phi(k_i))'} />
+                </div>
               </div>
 
               {/* The Matrix */}
@@ -328,7 +330,9 @@ export default function LinearTransformerDemo() {
               <div className="w-full border-t border-slate-100 pt-4 mt-2">
                  <div className="text-xs font-bold text-slate-400 mb-2">NORMALIZATION TERM</div>
                  <div className="flex items-center justify-center gap-4">
-                    <div className="font-mono text-xs text-slate-500">Z = ∑ ϕ(K<sub>i</sub>)</div>
+                    <div className="text-xs text-slate-500">
+                      <InlineMath math={'Z = \\sum_i \\phi(k_i)'} />
+                    </div>
                     <ArrowRight className="w-4 h-4 text-slate-300" />
                     <VectorVis vector={globalZ} title="Sum ϕ(K)" vertical={false} />
                  </div>
@@ -377,9 +381,9 @@ export default function LinearTransformerDemo() {
             <div className="flex flex-col items-center gap-6">
                {/* Formula */}
                <div className="bg-slate-50 p-3 rounded border border-slate-100 text-center">
-                 <div className="font-mono text-sm text-slate-700">
-                   W<sub>t</sub> = W<sub>t-1</sub> + (V<sub>t</sub> ⊗ ϕ(K<sub>t</sub>))
-                 </div>
+                 <div className="text-sm text-slate-700">
+                   <BlockMath math={'W_t = W_{t-1} + (v_t \\otimes \\phi(k_t))'} />
+                </div>
               </div>
 
               {/* The Matrix */}
@@ -395,7 +399,9 @@ export default function LinearTransformerDemo() {
                <div className="w-full border-t border-slate-100 pt-4 mt-2">
                  <div className="text-xs font-bold text-slate-400 mb-2">NORMALIZATION STATE</div>
                  <div className="flex items-center justify-center gap-4">
-                    <div className="font-mono text-xs text-slate-500">z<sub>t</sub> = z<sub>t-1</sub> + ϕ(k<sub>t</sub>)</div>
+                    <div className="text-xs text-slate-500">
+                      <InlineMath math={'z_t = z_{t-1} + \\phi(k_t)'} />
+                    </div>
                     <ArrowRight className="w-4 h-4 text-slate-300" />
                     <VectorVis vector={fwpState.z} title={`State z${step}`} vertical={false} />
                  </div>
@@ -458,8 +464,8 @@ export default function LinearTransformerDemo() {
                   by adding outer products of keys and values. This matrix acts as a limited-capacity short-term memory that can be queried later.
                 </p>
                 <ul className="list-disc pl-5 space-y-1 mt-2">
-                  <li><strong>Standard Attention:</strong> Attention(Q, K, V) = softmax(QK^T)V</li>
-                  <li><strong>Linear Attention (FWP):</strong> y_i = ϕ(q_i)^T * Sum(ϕ(k_j) ⊗ v_j)</li>
+                  <li><strong>Standard Attention:</strong> <InlineMath math={'\\mathrm{Attn}(Q,K,V)=\\mathrm{softmax}(QK^{\\top})V'} /></li>
+                  <li><strong>Linear Attention (FWP):</strong> <InlineMath math={'y_i = \\phi(q_i)^{\\top} \\sum_j \\phi(k_j) \\otimes v_j'} /></li>
                 </ul>
               </div>
             </div>

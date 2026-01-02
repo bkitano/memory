@@ -1,5 +1,7 @@
 // @ts-nocheck
 import React, { useState, useEffect, useCallback } from 'react';
+import 'katex/dist/katex.min.css';
+import { BlockMath, InlineMath } from 'react-katex';
 import { Play, Pause, SkipForward, SkipBack, RefreshCw, Calculator, ArrowRight, Grid } from 'lucide-react';
 
 const Card = ({ children, className = "" }) => (
@@ -80,8 +82,8 @@ const VectorDisplay = ({ data, title, orientation = "vertical", color = "emerald
 };
 
 const MathEq = ({ children }) => (
-  <span className="font-mono bg-slate-100 px-1 py-0.5 rounded text-slate-800 text-sm">
-    {children}
+  <span className="bg-slate-100 px-1 py-0.5 rounded text-slate-800 text-sm">
+    <InlineMath math={String(children)} />
   </span>
 );
 
@@ -227,7 +229,9 @@ export default function FastWeightSSM() {
 
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-3">
-            <label className="text-sm font-medium text-slate-700">Decay (λ): {decay}</label>
+            <label className="text-sm font-medium text-slate-700">
+              Decay (<InlineMath math={'\\lambda'} />): {decay}
+            </label>
             <input 
               type="range" 
               min="0" max="1" step="0.1" 
@@ -261,8 +265,8 @@ export default function FastWeightSSM() {
             </p>
 
             <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
-              <div className="text-center font-mono text-sm mb-4 text-slate-600">
-                Update Rule: S<sub className="text-xs">t</sub> = λS<sub className="text-xs">t-1</sub> + (v<sub className="text-xs">t</sub> ⊗ k<sub className="text-xs">t</sub>)
+              <div className="text-center text-sm mb-4 text-slate-600">
+                <BlockMath math={'S_t = \\lambda S_{t-1} + (v_t \\otimes k_t)'} />
               </div>
               
               <div className="flex items-center justify-center gap-4 flex-wrap">
@@ -298,8 +302,8 @@ export default function FastWeightSSM() {
             </p>
 
             <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
-              <div className="text-center font-mono text-sm mb-4 text-slate-600">
-                SSM Rule: h<sub className="text-xs">t</sub> = A h<sub className="text-xs">t-1</sub> + B u<sub className="text-xs">t</sub>
+              <div className="text-center text-sm mb-4 text-slate-600">
+                <BlockMath math={'h_t = A h_{t-1} + B u_t'} />
               </div>
 
               <div className="grid grid-cols-2 gap-4 text-sm">
@@ -310,17 +314,17 @@ export default function FastWeightSSM() {
                   </div>
                   <div className="flex justify-between border-b border-slate-200 pb-1">
                     <span className="text-slate-500">Input (u)</span>
-                    <span className="font-mono text-purple-700">v ⊗ k</span>
+                    <span className="text-purple-700"><InlineMath math={'v \\otimes k'} /></span>
                   </div>
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between border-b border-slate-200 pb-1">
                     <span className="text-slate-500">A (Dynamics)</span>
-                    <span className="font-mono text-purple-700">λ · I</span>
+                    <span className="text-purple-700"><InlineMath math={'\\lambda I'} /></span>
                   </div>
                   <div className="flex justify-between border-b border-slate-200 pb-1">
                     <span className="text-slate-500">B (Input Map)</span>
-                    <span className="font-mono text-purple-700">Identity</span>
+                    <span className="text-purple-700"><InlineMath math={'I'} /></span>
                   </div>
                 </div>
               </div>
@@ -341,7 +345,9 @@ export default function FastWeightSSM() {
 
           <div className="flex flex-col items-center">
             <ArrowRight className="text-slate-300 mb-2 rotate-90 md:rotate-0" size={32} />
-            <div className="text-xs text-slate-400 font-mono">Decay λ={decay}</div>
+            <div className="text-xs text-slate-400 font-mono">
+              <InlineMath math={`\\lambda = ${decay}`} />
+            </div>
             <div className="text-xs text-slate-400 font-mono">+ Update</div>
           </div>
 

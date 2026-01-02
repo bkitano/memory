@@ -1,5 +1,7 @@
 // @ts-nocheck
 import React, { useState, useRef, useEffect } from 'react';
+import 'katex/dist/katex.min.css';
+import { InlineMath } from 'react-katex';
 import { Play, RotateCcw, Info, Check, X } from 'lucide-react';
 
 /**
@@ -204,7 +206,7 @@ export default function GeometricProjection() {
       <div className="w-full p-6 border-b border-gray-100 bg-gray-50">
         <h1 className="text-2xl font-bold text-gray-800">Geometric Role of L2-Normalization in DeltaNet</h1>
         <p className="text-gray-600 mt-2 text-sm leading-relaxed">
-          The operation <code className="bg-gray-200 px-1 rounded font-mono font-bold text-gray-800">S ← S(I - βkkᵀ) + βvkᵀ</code> updates the state <strong className="text-blue-600">S</strong> by removing components related to Key <strong className="text-red-500">K</strong>.
+          The operation <InlineMath math={'S \\leftarrow S(I - \\beta k k^{\\top}) + \\beta v k^{\\top}'} /> updates the state <strong className="text-blue-600">S</strong> by removing components related to Key <strong className="text-red-500">K</strong>.
           <br/>
           Explore how <strong>normalizing K</strong> is critical for this to act as a clean <span className="italic text-green-600 font-semibold">geometric projection</span>.
         </p>
@@ -398,7 +400,7 @@ export default function GeometricProjection() {
                    <Check size={20} className="shrink-0" />
                    <p>
                      <strong>Protection Active:</strong> K is treated as a unit vector. <br/>
-                     <code className="font-mono text-xs">P = I - K_unit K_unitᵀ</code> is a projection matrix.
+                     <InlineMath math={'P = I - k_{\\mathrm{unit}} k_{\\mathrm{unit}}^{\\top}'} /> is a projection matrix.
                      <br/>
                      Result: S_new is the orthogonal projection of S onto the plane perpendicular to K. Perfect cleanup.
                    </p>
@@ -408,7 +410,7 @@ export default function GeometricProjection() {
                    <X size={20} className="shrink-0" />
                    <p>
                      <strong>Protection Inactive:</strong> K has magnitude {kMagnitude}. <br/>
-                     <code className="font-mono text-xs">M = I - KKᵀ</code> is NOT a projection.
+                     <InlineMath math={'M = I - K K^{\\top}'} /> is NOT a projection.
                      <br/>
                      Result: S_new is distorted. If |K| &gt; 1, S is flipped and scaled uncontrollably.
                    </p>
@@ -423,7 +425,7 @@ export default function GeometricProjection() {
             
             <div className="space-y-2">
                <div className="flex justify-between">
-                 <span>||K|| (Norm):</span>
+                 <span><InlineMath math={'\\lVert K \\rVert'} /> (Norm):</span>
                  <span className={isNormalized ? "text-gray-400 line-through decoration-red-500" : "text-gray-800"}>
                    {(len(vectorK) / PIXELS_PER_UNIT).toFixed(3)}
                  </span>
@@ -431,7 +433,7 @@ export default function GeometricProjection() {
                </div>
                
                <div className="flex justify-between">
-                 <span>Projection Scalar (KᵀS):</span>
+                 <span>Projection Scalar (<InlineMath math={'K^{\\top} S'} />):</span>
                  {/* Visual scalar scaled back to logical units for display */}
                  <span className={Math.abs(dot(kEff, vectorS)/PIXELS_PER_UNIT) > 2 ? "text-red-500 font-bold" : "text-gray-800"}>
                    {(dot(kEff, vectorS) / PIXELS_PER_UNIT * (isNormalized ? PIXELS_PER_UNIT : 1)).toFixed(2)}

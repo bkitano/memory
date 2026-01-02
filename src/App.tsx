@@ -4,9 +4,10 @@ import HopfieldTransformerTutorial from './demos/modern-hopfield'
 import FastWeightSSM from './demos/ssm'
 import GeometricProjection from './demos/deltanet-is-rotation'
 import LinearAttentionDemo from './demos/linear-attention'
+import LinearAttentionUpdatesDemo from './demos/linear-attention-updates'
 import TTTDemo from './demos/ttt'
 
-type TabId = 'fwp' | 'hopfield' | 'ssm' | 'deltanet' | 'linear-attention' | 'ttt'
+type TabId = 'fwp' | 'hopfield' | 'ssm' | 'deltanet' | 'linear-attention' | 'linear-attention-updates' | 'ttt'
 
 interface TabConfig {
   id: TabId
@@ -20,6 +21,7 @@ const tabs: TabConfig[] = [
   { id: 'ssm', label: 'State Space Models', component: FastWeightSSM },
   // { id: 'deltanet', label: 'DeltaNet', component: GeometricProjection },
   { id: 'linear-attention', label: 'Linear Attention', component: LinearAttentionDemo },
+  { id: 'linear-attention-updates', label: 'Linear Attention Updates', component: LinearAttentionUpdatesDemo },
   { id: 'ttt', label: 'TTT', component: TTTDemo },
 ]
 

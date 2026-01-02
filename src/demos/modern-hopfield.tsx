@@ -1,5 +1,7 @@
 // @ts-nocheck
 import { useState, useEffect, useMemo } from 'react';
+import 'katex/dist/katex.min.css';
+import { BlockMath, InlineMath } from 'react-katex';
 import { RefreshCw, ArrowRight, BookOpen, Info, Calculator, CheckCircle, AlertCircle } from 'lucide-react';
 
 /**
@@ -257,7 +259,7 @@ export default function HopfieldTransformerTutorial() {
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600" 
                 />
                 <p className="text-[10px] text-gray-400 mt-2 leading-tight">
-                  Controls the "sharpness" of the softmax. In attention, this is typically <span className="font-mono">1/√d</span>.
+                  Controls the "sharpness" of the softmax. In attention, this is typically <InlineMath math={'1/\\sqrt{d}'} />.
                 </p>
               </div>
 
@@ -318,7 +320,7 @@ export default function HopfieldTransformerTutorial() {
                   Hopfield Universe
                 </h2>
                 <div className="mt-2 text-center bg-gray-50 py-2 rounded-md border border-gray-100">
-                    <span className="font-serif italic text-lg text-gray-600">ξ<sup>new</sup> = X · softmax(β · X<sup>T</sup>ξ)</span>
+                    <BlockMath math={'\\xi^{\\mathrm{new}} = X\\,\\mathrm{softmax}(\\beta X^{\\top}\\xi)'} />
                 </div>
               </div>
 
@@ -343,7 +345,7 @@ export default function HopfieldTransformerTutorial() {
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 flex flex-col items-center">
                     <h3 className="text-[10px] font-bold uppercase text-gray-500 mb-2 tracking-wider">1. Similarity (Energy)</h3>
                     <div className="flex justify-center items-center gap-2">
-                        <span className="font-mono text-xs text-gray-400">X<sup>T</sup>ξ</span>
+                        <span className="text-xs text-gray-400"><InlineMath math={'X^{\\top}\\xi'} /></span>
                         <ArrowRight className="w-3 h-3 text-gray-300"/>
                         <VectorViz data={hopfieldResults.similarities} title="Scores" symbol="N×1" orientation="horizontal" />
                     </div>
@@ -353,7 +355,7 @@ export default function HopfieldTransformerTutorial() {
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 flex flex-col items-center">
                     <h3 className="text-[10px] font-bold uppercase text-gray-500 mb-2 tracking-wider">2. Softmax</h3>
                     <div className="flex justify-center items-center gap-2">
-                        <span className="font-mono text-xs text-gray-400">p</span>
+                        <span className="text-xs text-gray-400"><InlineMath math={'p'} /></span>
                         <ArrowRight className="w-3 h-3 text-gray-300"/>
                         <VectorViz data={hopfieldResults.p} title="Weights" symbol="N×1" orientation="horizontal" />
                     </div>
@@ -381,7 +383,7 @@ export default function HopfieldTransformerTutorial() {
                   Transformer Universe
                 </h2>
                 <div className="mt-2 text-center bg-gray-50 py-2 rounded-md border border-gray-100">
-                    <span className="font-serif italic text-lg text-gray-600">Attn = softmax((QK<sup>T</sup>)/√d) · V</span>
+                    <BlockMath math={'\\mathrm{Attn}=\\mathrm{softmax}((QK^{\\top})/\\sqrt{d})\\,V'} />
                 </div>
               </div>
 
@@ -406,7 +408,7 @@ export default function HopfieldTransformerTutorial() {
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 flex flex-col items-center">
                     <h3 className="text-[10px] font-bold uppercase text-gray-500 mb-2 tracking-wider">1. Scaled Dot-Product</h3>
                     <div className="flex justify-center items-center gap-2">
-                        <span className="font-mono text-xs text-gray-400">QK<sup>T</sup></span>
+                        <span className="text-xs text-gray-400"><InlineMath math={'QK^{\\top}'} /></span>
                         <ArrowRight className="w-3 h-3 text-gray-300"/>
                         <VectorViz data={transformerResults.scores} title="Raw Attn" symbol="1×N" orientation="horizontal" />
                     </div>
@@ -416,7 +418,7 @@ export default function HopfieldTransformerTutorial() {
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 flex flex-col items-center">
                     <h3 className="text-[10px] font-bold uppercase text-gray-500 mb-2 tracking-wider">2. Softmax Weights</h3>
                     <div className="flex justify-center items-center gap-2">
-                        <span className="font-mono text-xs text-gray-400">σ(·)</span>
+                        <span className="text-xs text-gray-400"><InlineMath math={'\\sigma(\\cdot)'} /></span>
                         <ArrowRight className="w-3 h-3 text-gray-300"/>
                         <VectorViz data={transformerResults.attnWeights} title="Weights" symbol="1×N" orientation="horizontal" />
                     </div>
@@ -459,7 +461,7 @@ export default function HopfieldTransformerTutorial() {
                     </div>
                     <div className="bg-slate-50 p-3 rounded border border-slate-100">
                         <strong className="block text-slate-800 mb-1">Global vs Local</strong>
-                        <p className="text-xs text-slate-600">Low $\beta$ (temperature) leads to global averaging (the network "sees" everything). High $\beta$ leads to sharp focus (the network "attends" to one specific memory).</p>
+                        <p className="text-xs text-slate-600">Low <InlineMath math={'\\beta'} /> (temperature) leads to global averaging (the network "sees" everything). High <InlineMath math={'\\beta'} /> leads to sharp focus (the network "attends" to one specific memory).</p>
                     </div>
                 </div>
             </div>

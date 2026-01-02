@@ -1,6 +1,8 @@
 // @ts-nocheck
 
 import React, { useState, useEffect, useMemo } from 'react';
+import 'katex/dist/katex.min.css';
+import { BlockMath, InlineMath } from 'react-katex';
 import { Play, SkipForward, RotateCcw, ArrowRight, Pause, Info } from 'lucide-react';
 
 // --- Math Helpers ---
@@ -227,8 +229,8 @@ export default function LinearAttentionDemo() {
             <p className="text-slate-600 max-w-2xl">
               Comparing the <span className="font-semibold text-blue-600">Recurrent (RNN)</span> view 
               vs the <span className="font-semibold text-emerald-600">Parallel (Attention)</span> view.
-              Linear Attention decomposes <code className="bg-slate-200 px-1 rounded">Attn(Q,K,V)</code> into 
-              <code className="bg-slate-200 px-1 rounded ml-1">phi(Q) · (phi(K)^T · V)</code>, allowing state tracking.
+              Linear Attention decomposes <InlineMath math={'\\mathrm{Attn}(Q,K,V)'} /> into
+              <span className="ml-1"><InlineMath math={'\\phi(Q)\\,\\big(\\phi(K)^{\\top} V\\big)'} /></span>, allowing state tracking.
             </p>
           </div>
           
@@ -288,8 +290,8 @@ export default function LinearAttentionDemo() {
             
             <div className="space-y-8">
               {/* Formula */}
-              <div className="bg-blue-50 p-3 rounded-lg text-sm text-blue-900 font-mono text-center">
-                S<sub>t</sub> = S<sub>t-1</sub> + ϕ(k<sub>t</sub>)v<sub>t</sub><sup>T</sup>
+              <div className="bg-blue-50 p-3 rounded-lg text-sm text-blue-900 text-center">
+                <BlockMath math={'S_t = S_{t-1} + \\phi(k_t) v_t^{\\top}'} />
               </div>
 
               {step === 0 ? (
@@ -329,8 +331,8 @@ export default function LinearAttentionDemo() {
                   {/* Step 3: Querying the State */}
                   <div className="flex flex-col items-center">
                     <h3 className="text-sm font-semibold text-slate-400 mb-4 w-full text-left border-b pb-2">3. Compute Output</h3>
-                    <div className="bg-blue-50 p-3 rounded-lg text-sm text-blue-900 font-mono mb-4">
-                      o<sub>t</sub> = S<sub>t</sub><sup>T</sup> · ϕ(q<sub>t</sub>)
+                    <div className="bg-blue-50 p-3 rounded-lg text-sm text-blue-900 mb-4">
+                      <BlockMath math={'o_t = S_t^{\\top} \\phi(q_t)'} />
                     </div>
                     <div className="flex items-center gap-4">
                        <Matrix data={currentS} title={`S_{${step}}`} className="scale-75 opacity-80" />
@@ -357,8 +359,8 @@ export default function LinearAttentionDemo() {
 
             <div className="space-y-8">
                {/* Formula */}
-               <div className="bg-emerald-50 p-3 rounded-lg text-sm text-emerald-900 font-mono text-center">
-                Out = (ϕ(Q)ϕ(K)<sup>T</sup>) · V
+               <div className="bg-emerald-50 p-3 rounded-lg text-sm text-emerald-900 text-center">
+                <BlockMath math={'\\mathrm{Out} = (\\phi(Q)\\phi(K)^{\\top})\\,V'} />
               </div>
 
               {step === 0 ? (

@@ -2,6 +2,8 @@
 
 // @ts-nocheck
 import React, { useState, useEffect, useMemo } from 'react';
+import 'katex/dist/katex.min.css';
+import { BlockMath, InlineMath } from 'react-katex';
 import { Play, Pause, SkipForward, RotateCcw, ArrowRight, Activity, Zap, BookOpen, Box, Info, ChevronRight, Target, Sparkles } from 'lucide-react';
 
 // --- Math & Simulation Logic ---
@@ -105,8 +107,8 @@ const VectorView = ({ data, title, formula, orientation = 'vertical', showValues
 };
 
 const MathFormula = ({ tex }: { tex: string }) => (
-  <span className="font-serif italic bg-slate-100 dark:bg-slate-800 px-1 rounded text-slate-800 dark:text-slate-200">
-    {tex}
+  <span className="bg-slate-100 dark:bg-slate-800 px-1 rounded text-slate-800 dark:text-slate-200">
+    <InlineMath math={tex} />
   </span>
 );
 
@@ -333,10 +335,12 @@ export default function TTTDemo() {
                {subStep >= 2 && (
                  <div className="bg-orange-50/50 dark:bg-orange-950/10 p-4 rounded-lg border border-orange-100 dark:border-orange-900 animate-in fade-in slide-in-from-bottom-2">
                     <div className="flex items-center justify-between mb-2">
-                       <div className="flex flex-col">
+                    <div className="flex flex-col">
                          <span className="text-[10px] font-bold text-orange-600 uppercase">Weight Accumulation (Batch GD Mode)</span>
-                         <code className="text-[11px] font-mono text-orange-800 dark:text-orange-300">ΔW = -η ∇L(W_0; x_t) = η (z_t x_tᵀ)</code>
-                       </div>
+                         <div className="text-[11px] font-mono text-orange-800 dark:text-orange-300">
+                           <InlineMath math={'\\Delta W = -\\eta \\nabla L(W_0; x_t) = \\eta (z_t x_t^{\\top})'} />
+                         </div>
+                      </div>
                        <div className="flex items-center gap-1 bg-blue-100 dark:bg-blue-900/50 px-2 py-1 rounded border border-blue-200 text-blue-700 dark:text-blue-300">
                           <Sparkles size={12} />
                           <span className="text-[9px] font-bold uppercase tracking-tighter">Linear Attention Identity</span>
@@ -363,9 +367,9 @@ export default function TTTDemo() {
 
                     <div className="mt-6 pt-4 border-t border-orange-100 text-center">
                        <div className="inline-block bg-white dark:bg-slate-800 px-4 py-2 rounded-lg border border-orange-200 shadow-sm">
-                         <p className="text-xs font-mono font-bold text-indigo-600">
-                           W_{step + 1} = W_t + η (z_t x_tᵀ)
-                         </p>
+                         <div className="text-xs font-mono font-bold text-indigo-600">
+                           <InlineMath math={'W_{t+1} = W_t + \\eta (z_t x_t^{\\top})'} />
+                         </div>
                          <p className="text-[8px] uppercase tracking-widest text-slate-400 mt-1">This is exactly the Linear Transformers memory update</p>
                        </div>
                     </div>
@@ -402,17 +406,17 @@ export default function TTTDemo() {
              <h4 className="font-bold text-sm uppercase tracking-widest">The Batch GD / Linear Attention Duality</h4>
            </div>
            <p className="text-xs leading-relaxed mb-4">
-             In TTT-Linear, calculating the gradient at the <strong>initial weights</strong> (<MathFormula tex="W_0" />) for every step $t$ is equivalent to <strong>Batch Gradient Descent</strong> on a dataset size of 1. Because <MathFormula tex="W_0 = 0" />, the state $W_t$ becomes an unbiased accumulation of independent features:
+             In TTT-Linear, calculating the gradient at the <strong>initial weights</strong> (<MathFormula tex="W_0" />) for every step <InlineMath math={'t'} /> is equivalent to <strong>Batch Gradient Descent</strong> on a dataset size of 1. Because <MathFormula tex="W_0 = 0" />, the state <InlineMath math={'W_t'} /> becomes an unbiased accumulation of independent features:
            </p>
            <div className="grid md:grid-cols-2 gap-4 text-[10px] font-mono opacity-80">
               <div className="p-3 bg-slate-950 border border-indigo-900/50 rounded flex flex-col gap-1">
                 <span className="text-indigo-400 font-bold uppercase text-[9px]">TTT Formulation (Dual)</span>
-                <span>{'W_t = W_{t-1} + \\eta (z_t x_t^\\top)'}</span>
+                <span><InlineMath math={'W_t = W_{t-1} + \\eta (z_t x_t^{\\top})'} /></span>
                 <span className="text-slate-500 mt-1 italic">Uses static reference W_0 to compute grad.</span>
               </div>
               <div className="p-3 bg-slate-950 border border-emerald-900/50 rounded flex flex-col gap-1">
                 <span className="text-emerald-400 font-bold uppercase text-[9px]">Linear Attention Formulation</span>
-                <span>{'y_t = \\sum_{i=1}^t v_i (k_i^\\top q_t)'}</span>
+                <span><InlineMath math={'y_t = \\sum_{i=1}^t v_i (k_i^{\\top} q_t)'} /></span>
                 <span className="text-slate-500 mt-1 italic">Equivalent to matrix-vector associative memory.</span>
               </div>
            </div>
@@ -437,7 +441,7 @@ export default function TTTDemo() {
                   <div className="bg-indigo-950/50 p-4 rounded-xl border border-indigo-500/30">
                     <p className="text-xs font-mono mb-2 text-indigo-300 uppercase tracking-tighter font-bold">Self-supervised Loss:</p>
                     <div className="text-lg font-serif">
-                       <MathFormula tex="\mathcal{L}(W; x_t) = \| W x_t - z_t \|^2" />
+                       <BlockMath math={'\\mathcal{L}(W; x_t) = \\lVert W x_t - z_t \\rVert^2'} />
                     </div>
                   </div>
                 </div>
