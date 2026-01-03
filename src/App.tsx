@@ -6,8 +6,17 @@ import FastWeightSSM from './demos/ssm'
 import LinearAttentionDemo from './demos/linear-attention'
 // import LinearAttentionUpdatesDemo from './demos/linear-attention-updates'
 import TTTDemo from './demos/ttt'
+import LandingPage from './components/LandingPage'
 
-type TabId = 'fwp' | 'hopfield' | 'ssm' | 'deltanet' | 'linear-attention' | 'linear-attention-updates' | 'ttt'
+type TabId =
+  | 'landing'
+  | 'fwp'
+  | 'hopfield'
+  | 'ssm'
+  | 'deltanet'
+  | 'linear-attention'
+  | 'linear-attention-updates'
+  | 'ttt'
 
 interface TabConfig {
   id: TabId
@@ -16,6 +25,7 @@ interface TabConfig {
 }
 
 const tabs: TabConfig[] = [
+  { id: 'landing', label: 'Overview', component: LandingPage },
   { id: 'fwp', label: 'Linear Transformers = Fast Weight Programmers', component: LinearTransformerDemo },
   { id: 'hopfield', label: 'Hopfield Networks is All You Need', component: HopfieldTransformerTutorial },
   { id: 'ssm', label: 'State Space Models', component: FastWeightSSM },
@@ -26,7 +36,7 @@ const tabs: TabConfig[] = [
 ]
 
 function App() {
-  const [activeTab, setActiveTab] = useState<TabId>('fwp')
+  const [activeTab, setActiveTab] = useState<TabId>('landing')
   const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component
 
   return (
