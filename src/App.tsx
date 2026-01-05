@@ -8,6 +8,7 @@ import LinearAttentionDemo from './demos/linear-attention'
 import TTTDemo from './demos/ttt'
 import LandingPage from './components/LandingPage'
 import TTTLinearRegressionDemo from './demos/ttt-linear-regression'
+import TTTLinearRegression2DDemo from './demos/ttt-linear-regression-2d'
 
 type TabId =
   | 'landing'
@@ -19,6 +20,7 @@ type TabId =
   | 'linear-attention-updates'
   | 'ttt'
   | 'ttt-linear-regression'
+  | 'ttt-linear-regression-2d'
 
 interface TabConfig {
   id: TabId
@@ -36,6 +38,7 @@ const tabs: TabConfig[] = [
   // { id: 'linear-attention-updates', label: 'Linear Attention Updates', component: LinearAttentionUpdatesDemo },
   { id: 'ttt', label: 'TTT', component: TTTDemo },
   { id: 'ttt-linear-regression', label: 'TTT Linear Regression (1D)', component: TTTLinearRegressionDemo },
+  { id: 'ttt-linear-regression-2d', label: 'Online SGD Linear Regression (2D)', component: TTTLinearRegression2DDemo },
 ]
 
 function App() {
