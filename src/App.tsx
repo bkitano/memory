@@ -7,6 +7,7 @@ import LinearAttentionDemo from './demos/linear-attention'
 // import LinearAttentionUpdatesDemo from './demos/linear-attention-updates'
 import TTTDemo from './demos/ttt'
 import LandingPage from './components/LandingPage'
+import TTTLinearRegressionDemo from './demos/ttt-linear-regression'
 
 type TabId =
   | 'landing'
@@ -17,6 +18,7 @@ type TabId =
   | 'linear-attention'
   | 'linear-attention-updates'
   | 'ttt'
+  | 'ttt-linear-regression'
 
 interface TabConfig {
   id: TabId
@@ -33,6 +35,7 @@ const tabs: TabConfig[] = [
   { id: 'linear-attention', label: 'Linear Attention', component: LinearAttentionDemo },
   // { id: 'linear-attention-updates', label: 'Linear Attention Updates', component: LinearAttentionUpdatesDemo },
   { id: 'ttt', label: 'TTT', component: TTTDemo },
+  { id: 'ttt-linear-regression', label: 'TTT Linear Regression (1D)', component: TTTLinearRegressionDemo },
 ]
 
 function App() {
@@ -49,11 +52,10 @@ function App() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex-1 px-6 py-4 text-sm font-medium transition-colors ${
-                  activeTab === tab.id
+                className={`flex-1 px-6 py-4 text-sm font-medium transition-colors ${activeTab === tab.id
                     ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
                     : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                }`}
+                  }`}
               >
                 {tab.label}
               </button>
