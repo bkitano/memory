@@ -1,7 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 /* Custom CSS variables for theming */
 :root {
+  --font-display: "Space Grotesk", "Segoe UI", sans-serif;
+  --font-body: "Newsreader", "Iowan Old Style", "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
+  --paper: #f7f1e8;
+  --paper-deep: #efe5d8;
+  --ink: #111827;
+  --ink-muted: #475569;
+  --accent: #0f766e;
+  --accent-strong: #115e59;
+  --accent-soft: #ccfbf1;
   --background: 0 0% 100%;
   --foreground: 222.2 84% 4.9%;
   --card: 0 0% 100%;
@@ -25,6 +36,13 @@
 }
 
 .dark {
+  --paper: #0b1120;
+  --paper-deep: #0f172a;
+  --ink: #f8fafc;
+  --ink-muted: #94a3b8;
+  --accent: #2dd4bf;
+  --accent-strong: #0f766e;
+  --accent-soft: #134e4a;
   --background: 222.2 84% 4.9%;
   --foreground: 210 40% 98%;
   --card: 222.2 84% 4.9%;

@@ -136,6 +136,16 @@ export default function TTTLinearRegressionDemo() {
             <p className="text-xs text-slate-500">
               Batch GD update at w0=0 matches the linear attention state update.
             </p>
+            <p className="text-[11px] text-slate-500 mt-1">
+              <a
+                href="https://arxiv.org/pdf/2407.04620"
+                target="_blank"
+                rel="noreferrer"
+                className="text-blue-600 hover:text-blue-700 underline underline-offset-2"
+              >
+                TTT paper (arXiv:2407.04620)
+              </a>
+            </p>
           </div>
           <div className="text-xs text-slate-500 flex items-center gap-2">
             <span className="bg-slate-100 px-2 py-1 rounded font-mono">state: S_t</span>

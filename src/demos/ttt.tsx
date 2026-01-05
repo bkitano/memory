@@ -40,13 +40,13 @@ const HeatmapCell = ({ value, label, showValue, isHighlight, size = "w-10 h-10" 
     <div 
       className={`
         relative ${size} flex items-center justify-center text-[10px] font-mono transition-all duration-300 border
-        ${isHighlight ? 'border-yellow-400 border-2 z-10 scale-110' : 'border-slate-200 dark:border-slate-700'}
-        ${value === 0 ? 'bg-slate-50 dark:bg-slate-900/50' : ''}
+        ${isHighlight ? 'border-yellow-400 border-2 z-10 scale-110' : 'border-slate-200'}
+        ${value === 0 ? 'bg-slate-50' : ''}
       `}
       style={{ backgroundColor: color }}
     >
       {showValue && (
-        <span className={Math.abs(value) > 0.5 ? 'text-white' : 'text-slate-900 dark:text-slate-100'}>
+        <span className={Math.abs(value) > 0.5 ? 'text-white' : 'text-slate-900'}>
           {value === 0 ? "0" : value.toFixed(1)}
         </span>
       )}
@@ -61,11 +61,11 @@ const MatrixView = ({ data, title, subtitle, formula, highlightIndices = [], sho
   return (
     <div className="flex flex-col items-center space-y-1">
       <div className="text-center">
-        <h3 className={`font-bold text-slate-800 dark:text-slate-100 ${small ? 'text-[10px]' : 'text-sm'}`}>{title}</h3>
+        <h3 className={`font-bold text-slate-800 ${small ? 'text-[10px]' : 'text-sm'}`}>{title}</h3>
         {formula && <p className="text-[9px] font-mono text-indigo-500 mb-1">{formula}</p>}
-        {subtitle && <p className="text-[10px] text-slate-500 dark:text-slate-400">{subtitle}</p>}
+        {subtitle && <p className="text-[10px] text-slate-500">{subtitle}</p>}
       </div>
-      <div className="grid gap-px p-1 bg-slate-100 dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
+      <div className="grid gap-px p-1 bg-slate-100 rounded-lg shadow-sm border border-slate-200">
         {data.map((row: any[], i: number) => (
           <div key={i} className="flex gap-px">
             {row.map((val, j) => (
@@ -88,10 +88,10 @@ const VectorView = ({ data, title, formula, orientation = 'vertical', showValues
   return (
     <div className="flex flex-col items-center space-y-2">
        <div className="text-center">
-         <h3 className={`font-bold text-[10px] uppercase tracking-wider ${color} dark:text-slate-300`}>{title}</h3>
+         <h3 className={`font-bold text-[10px] uppercase tracking-wider ${color}`}>{title}</h3>
          {formula && <p className="text-[9px] font-mono text-indigo-500 opacity-80">{formula}</p>}
        </div>
-      <div className={`flex ${orientation === 'vertical' ? 'flex-col' : 'flex-row'} gap-px p-1 bg-slate-100 dark:bg-slate-800 rounded`}>
+      <div className={`flex ${orientation === 'vertical' ? 'flex-col' : 'flex-row'} gap-px p-1 bg-slate-100 rounded`}>
         {data.map((val: any, i: number) => (
           <HeatmapCell 
             key={i} 
@@ -107,7 +107,7 @@ const VectorView = ({ data, title, formula, orientation = 'vertical', showValues
 };
 
 const MathFormula = ({ tex }: { tex: string }) => (
-  <span className="bg-slate-100 dark:bg-slate-800 px-1 rounded text-slate-800 dark:text-slate-200">
+  <span className="bg-slate-100 px-1 rounded text-slate-800">
     <InlineMath math={tex} />
   </span>
 );
@@ -198,8 +198,8 @@ export default function TTTDemo() {
   if (!sequence.length || !thetaK.length) return <div className="p-10 text-center text-slate-500">Initializing...</div>;
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans pb-20">
-      <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 p-4 sticky top-0 z-50">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20">
+      <header className="bg-white border-b border-slate-200 p-4 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center space-x-3">
             <div className="bg-indigo-600 p-2 rounded-lg text-white">
@@ -207,15 +207,25 @@ export default function TTTDemo() {
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight">TTT-Linear: Unrolled RNN View</h1>
-              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium flex items-center gap-2">
+              <p className="text-xs text-slate-500 font-medium flex items-center gap-2">
                 <span>Update:</span>
                 <MathFormula tex="W_t = W_{t-1} - \eta \nabla \mathcal{L}(W_0; x_t)" />
-                <span className="bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 px-2 py-0.5 rounded text-[10px] font-bold">BATCH GD MODE</span>
+                <span className="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-[10px] font-bold">BATCH GD MODE</span>
+              </p>
+              <p className="text-[11px] text-slate-500 mt-1">
+                <a
+                  href="https://arxiv.org/pdf/2407.04620"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-indigo-600 hover:text-indigo-700 underline underline-offset-2"
+                >
+                  TTT paper (arXiv:2407.04620)
+                </a>
               </p>
             </div>
           </div>
 
-          <div className="flex items-center space-x-4 bg-slate-100 dark:bg-slate-800 p-2 rounded-xl">
+          <div className="flex items-center space-x-4 bg-slate-100 p-2 rounded-xl">
              <div className="flex flex-col px-2">
                 <span className="text-[10px] uppercase font-bold text-slate-400">Step η</span>
                 <input 
@@ -225,13 +235,13 @@ export default function TTTDemo() {
                   className="w-20 h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer accent-indigo-600"
                 />
              </div>
-             <button onClick={() => setIsPlaying(!isPlaying)} className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+             <button onClick={() => setIsPlaying(!isPlaying)} className="p-2 rounded-full hover:bg-slate-200 transition">
                {isPlaying ? <Pause size={20} className="fill-current"/> : <Play size={20} className="fill-current"/>}
              </button>
-             <button onClick={handleNext} disabled={step >= SEQ_LEN - 1 && subStep >= 3} className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+             <button onClick={handleNext} disabled={step >= SEQ_LEN - 1 && subStep >= 3} className="p-2 rounded-full hover:bg-slate-200 transition">
                <SkipForward size={20} />
              </button>
-             <button onClick={handleReset} className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition text-red-500">
+             <button onClick={handleReset} className="p-2 rounded-full hover:bg-slate-200 transition text-red-500">
                <RotateCcw size={20} />
              </button>
           </div>
@@ -241,7 +251,7 @@ export default function TTTDemo() {
       <main className="max-w-7xl mx-auto p-4 space-y-6">
         
         {/* Unrolled RNN View */}
-        <section className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 overflow-x-auto">
+        <section className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 overflow-x-auto">
           <div className="flex items-center gap-2 mb-6 border-b pb-3">
             <BookOpen className="text-indigo-500" size={18} />
             <h2 className="text-xs font-bold uppercase tracking-widest text-slate-500">Temporal Unrolling (Sequence Flow)</h2>
@@ -302,7 +312,7 @@ export default function TTTDemo() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Projection Stage */}
           <div className="lg:col-span-3 flex flex-col gap-6">
-             <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+             <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                 <div className="text-xs font-bold uppercase text-slate-400 mb-4">Input Projections</div>
                 <div className="space-y-4">
                   <VectorView data={x_train} title="Key (x_t)" formula="u θ_K" small color="text-indigo-600" />
@@ -314,7 +324,7 @@ export default function TTTDemo() {
 
           {/* Core State Update */}
           <div className="lg:col-span-6 flex flex-col gap-6">
-            <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-md relative">
+            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-md relative">
                <div className="flex items-center gap-2 mb-6 border-b pb-3">
                  <Zap size={18} className="text-orange-500" />
                  <h2 className="text-sm font-bold uppercase tracking-wider">Inner Loop Mechanism</h2>
@@ -333,15 +343,15 @@ export default function TTTDemo() {
 
                {/* Update Rule */}
                {subStep >= 2 && (
-                 <div className="bg-orange-50/50 dark:bg-orange-950/10 p-4 rounded-lg border border-orange-100 dark:border-orange-900 animate-in fade-in slide-in-from-bottom-2">
+                 <div className="bg-orange-50/50 p-4 rounded-lg border border-orange-100 animate-in fade-in slide-in-from-bottom-2">
                     <div className="flex items-center justify-between mb-2">
                     <div className="flex flex-col">
                          <span className="text-[10px] font-bold text-orange-600 uppercase">Weight Accumulation (Batch GD Mode)</span>
-                         <div className="text-[11px] font-mono text-orange-800 dark:text-orange-300">
+                         <div className="text-[11px] font-mono text-orange-800">
                            <InlineMath math={'\\Delta W = -\\eta \\nabla L(W_0; x_t) = \\eta (z_t x_t^{\\top})'} />
                          </div>
                       </div>
-                       <div className="flex items-center gap-1 bg-blue-100 dark:bg-blue-900/50 px-2 py-1 rounded border border-blue-200 text-blue-700 dark:text-blue-300">
+                       <div className="flex items-center gap-1 bg-blue-100 px-2 py-1 rounded border border-blue-200 text-blue-700">
                           <Sparkles size={12} />
                           <span className="text-[9px] font-bold uppercase tracking-tighter">Linear Attention Identity</span>
                        </div>
@@ -366,7 +376,7 @@ export default function TTTDemo() {
                     </div>
 
                     <div className="mt-6 pt-4 border-t border-orange-100 text-center">
-                       <div className="inline-block bg-white dark:bg-slate-800 px-4 py-2 rounded-lg border border-orange-200 shadow-sm">
+                       <div className="inline-block bg-white px-4 py-2 rounded-lg border border-orange-200 shadow-sm">
                          <div className="text-xs font-mono font-bold text-indigo-600">
                            <InlineMath math={'W_{t+1} = W_t + \\eta (z_t x_t^{\\top})'} />
                          </div>
@@ -380,10 +390,10 @@ export default function TTTDemo() {
 
           {/* Generation Pass */}
           <div className="lg:col-span-3 flex flex-col gap-6">
-             <div className={`bg-emerald-50 dark:bg-emerald-950/10 p-6 rounded-xl border border-emerald-100 dark:border-emerald-900 h-full transition-all duration-500 shadow-sm ${subStep === 3 ? 'opacity-100 ring-2 ring-emerald-400' : 'opacity-20 grayscale'}`}>
+             <div className={`bg-emerald-50 p-6 rounded-xl border border-emerald-100 h-full transition-all duration-500 shadow-sm ${subStep === 3 ? 'opacity-100 ring-2 ring-emerald-400' : 'opacity-20 grayscale'}`}>
                 <div className="flex items-center gap-2 mb-6">
                    <Box size={20} className="text-emerald-600" />
-                   <h3 className="font-bold text-emerald-800 dark:text-emerald-200 uppercase text-xs">Final Result</h3>
+                   <h3 className="font-bold text-emerald-800 uppercase text-xs">Final Result</h3>
                 </div>
 
                 <div className="flex flex-col items-center gap-6">
@@ -391,7 +401,7 @@ export default function TTTDemo() {
                    <span className="text-emerald-500 font-bold">·</span>
                    <VectorView data={x_test} title="Query (x_test)" showValues={false} color="text-emerald-600" />
                    <ArrowRight className="rotate-90 text-emerald-500" />
-                   <div className="p-3 bg-white dark:bg-slate-900 rounded-lg border border-emerald-200">
+                   <div className="p-3 bg-white rounded-lg border border-emerald-200">
                       <VectorView data={finalOutput} title="y_t" formula="f_W(x_test)" showValues={showValues} color="text-emerald-700" />
                    </div>
                 </div>
@@ -400,55 +410,55 @@ export default function TTTDemo() {
         </div>
 
         {/* Theoretical Footer */}
-        <section className="bg-slate-900 text-slate-300 p-6 rounded-xl border border-slate-800">
-           <div className="flex items-center gap-2 mb-4 text-white">
+        <section className="bg-slate-100 text-slate-700 p-6 rounded-xl border border-slate-300">
+           <div className="flex items-center gap-2 mb-4 text-slate-900">
              <Info size={16} />
              <h4 className="font-bold text-sm uppercase tracking-widest">The Batch GD / Linear Attention Duality</h4>
            </div>
-           <p className="text-xs leading-relaxed mb-4">
+           <p className="text-xs leading-relaxed mb-4 text-slate-600">
              In TTT-Linear, calculating the gradient at the <strong>initial weights</strong> (<MathFormula tex="W_0" />) for every step <InlineMath math={'t'} /> is equivalent to <strong>Batch Gradient Descent</strong> on a dataset size of 1. Because <MathFormula tex="W_0 = 0" />, the state <InlineMath math={'W_t'} /> becomes an unbiased accumulation of independent features:
            </p>
-           <div className="grid md:grid-cols-2 gap-4 text-[10px] font-mono opacity-80">
-              <div className="p-3 bg-slate-950 border border-indigo-900/50 rounded flex flex-col gap-1">
-                <span className="text-indigo-400 font-bold uppercase text-[9px]">TTT Formulation (Dual)</span>
-                <span><InlineMath math={'W_t = W_{t-1} + \\eta (z_t x_t^{\\top})'} /></span>
+           <div className="grid md:grid-cols-2 gap-4 text-[10px] font-mono">
+              <div className="p-3 bg-white border border-indigo-200 rounded flex flex-col gap-1">
+                <span className="text-indigo-600 font-bold uppercase text-[9px]">TTT Formulation (Dual)</span>
+                <span className="text-slate-700"><InlineMath math={'W_t = W_{t-1} + \\eta (z_t x_t^{\\top})'} /></span>
                 <span className="text-slate-500 mt-1 italic">Uses static reference W_0 to compute grad.</span>
               </div>
-              <div className="p-3 bg-slate-950 border border-emerald-900/50 rounded flex flex-col gap-1">
-                <span className="text-emerald-400 font-bold uppercase text-[9px]">Linear Attention Formulation</span>
-                <span><InlineMath math={'y_t = \\sum_{i=1}^t v_i (k_i^{\\top} q_t)'} /></span>
+              <div className="p-3 bg-white border border-emerald-200 rounded flex flex-col gap-1">
+                <span className="text-emerald-600 font-bold uppercase text-[9px]">Linear Attention Formulation</span>
+                <span className="text-slate-700"><InlineMath math={'y_t = \\sum_{i=1}^t v_i (k_i^{\\top} q_t)'} /></span>
                 <span className="text-slate-500 mt-1 italic">Equivalent to matrix-vector associative memory.</span>
               </div>
            </div>
         </section>
 
         {/* Objective Section */}
-        <section className="bg-indigo-900 text-white rounded-2xl p-6 shadow-xl border border-indigo-700 overflow-hidden relative">
+        <section className="bg-indigo-50 text-slate-900 rounded-2xl p-6 shadow-xl border border-indigo-200 overflow-hidden relative">
            <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
               <Target size={120} />
            </div>
            <div className="relative z-10">
               <div className="flex items-center gap-2 mb-4">
-                <Target className="text-indigo-300" size={20} />
-                <h2 className="text-sm font-bold uppercase tracking-widest text-indigo-200">Test-Time Objective (Self-Supervision)</h2>
+                <Target className="text-indigo-600" size={20} />
+                <h2 className="text-sm font-bold uppercase tracking-widest text-indigo-800">Test-Time Objective (Self-Supervision)</h2>
               </div>
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div>
-                  <p className="text-sm leading-relaxed text-indigo-100 mb-4">
+                  <p className="text-sm leading-relaxed text-indigo-800 mb-4">
                     In TTT-Linear, the hidden state <MathFormula tex="W" /> is a weight matrix. At each step <MathFormula tex="t" />, we perform gradient descent to solve a <strong>Reconstruction Task</strong>: 
                     predicting the value (V) from the key (K).
                   </p>
-                  <div className="bg-indigo-950/50 p-4 rounded-xl border border-indigo-500/30">
-                    <p className="text-xs font-mono mb-2 text-indigo-300 uppercase tracking-tighter font-bold">Self-supervised Loss:</p>
+                  <div className="bg-white p-4 rounded-xl border border-indigo-300">
+                    <p className="text-xs font-mono mb-2 text-indigo-700 uppercase tracking-tighter font-bold">Self-supervised Loss:</p>
                     <div className="text-lg font-serif">
                        <BlockMath math={'\\mathcal{L}(W; x_t) = \\lVert W x_t - z_t \\rVert^2'} />
                     </div>
                   </div>
                 </div>
-                <div className="text-xs text-indigo-200/80 space-y-3 bg-white/5 p-4 rounded-xl">
-                   <p><strong className="text-white">Goal:</strong> Find weights <MathFormula tex="W" /> that best map Key space to Value space for the current token.</p>
-                   <p><strong className="text-white">Mechanism:</strong> Every state update <MathFormula tex="W_t" /> is literally a training step. We use <strong>Batch GD</strong>, meaning we always calculate the gradient relative to a fixed starting point <MathFormula tex="W_0" /> to maintain linearity.</p>
-                   <p><strong className="text-white">Result:</strong> The "memory" of the RNN is stored in the weights of this tiny internal model.</p>
+                <div className="text-xs text-indigo-700 space-y-3 bg-white p-4 rounded-xl">
+                   <p><strong className="text-slate-900">Goal:</strong> Find weights <MathFormula tex="W" /> that best map Key space to Value space for the current token.</p>
+                   <p><strong className="text-slate-900">Mechanism:</strong> Every state update <MathFormula tex="W_t" /> is literally a training step. We use <strong>Batch GD</strong>, meaning we always calculate the gradient relative to a fixed starting point <MathFormula tex="W_0" /> to maintain linearity.</p>
+                   <p><strong className="text-slate-900">Result:</strong> The "memory" of the RNN is stored in the weights of this tiny internal model.</p>
                 </div>
               </div>
            </div>

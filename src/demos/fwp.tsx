@@ -242,6 +242,16 @@ export default function LinearTransformerDemo() {
           Linear self-attention is mathematically identical to a Recurrent Neural Network (RNN) 
           that updates a matrix-valued hidden state (Fast Weights) using an outer-product rule.
         </p>
+        <p className="mt-2 text-[11px] text-slate-500">
+          <a
+            href="https://proceedings.mlr.press/v139/schlag21a/schlag21a.pdf"
+            target="_blank"
+            rel="noreferrer"
+            className="text-blue-600 hover:text-blue-700 underline underline-offset-2"
+          >
+            Fast Weight Programmers paper (Schlag et al., 2021)
+          </a>
+        </p>
       </header>
 
       {/* Main Grid */}

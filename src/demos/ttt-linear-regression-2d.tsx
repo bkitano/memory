@@ -273,7 +273,7 @@ const SignaturePlot = ({
         ))}
       </svg>
       <div className="text-[11px] text-slate-500 mt-2">
-        Arrows show S_t e1 and S_t e2 in value space.
+        e1 = [1, 0], e2 = [0, 1]. Arrows show where the key axes land: S_t e1 and S_t e2.
       </div>
     </div>
   );
@@ -511,6 +511,26 @@ export default function TTTLinearRegression2DDemo() {
             <h1 className="text-xl font-bold">Delta-Net 2D TTT</h1>
             <p className="text-xs text-slate-500">
               State matrix S_t (aka A) maps keys k to values v. Update shown is DeltaNet-style error correction, not pure linear attention.
+            </p>
+            <p className="text-[11px] text-slate-500 mt-1">
+              <a
+                href="https://arxiv.org/pdf/2407.04620"
+                target="_blank"
+                rel="noreferrer"
+                className="text-blue-600 hover:text-blue-700 underline underline-offset-2"
+              >
+                TTT paper (arXiv:2407.04620)
+              </a>
+            </p>
+            <p className="text-[11px] text-slate-500">
+              <a
+                href="https://sustcsonglin.github.io/blog/2024/deltanet-1/"
+                target="_blank"
+                rel="noreferrer"
+                className="text-blue-600 hover:text-blue-700 underline underline-offset-2"
+              >
+                DeltaNet blog post
+              </a>
             </p>
           </div>
           <div className="text-xs text-slate-500 flex items-center gap-2">
