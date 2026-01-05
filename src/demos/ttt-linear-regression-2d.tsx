@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import 'katex/dist/katex.min.css';
 import { BlockMath, InlineMath } from 'react-katex';
 import { Pause, Play, RefreshCw, RotateCcw, SkipForward } from 'lucide-react';
@@ -351,6 +351,8 @@ export default function TTTLinearRegression2DDemo() {
   const [lossHistory, setLossHistory] = useState<number[]>([]);
   const [emaHistory, setEmaHistory] = useState<number[]>([]);
   const [lossMax, setLossMax] = useState(1);
+  const sequenceContainerRef = useRef<HTMLDivElement | null>(null);
+  const activeItemRef = useRef<HTMLDivElement | null>(null);
 
   const resetModel = useCallback(() => {
     setMatrix(zeroMatrix());
@@ -404,11 +406,15 @@ export default function TTTLinearRegression2DDemo() {
 
   useEffect(() => {
     if (!isPlaying) return;
+    if (step >= trainSet.length) {
+      setIsPlaying(false);
+      return;
+    }
     const id = window.setTimeout(() => {
       stepOnce();
     }, 1200);
     return () => window.clearTimeout(id);
-  }, [isPlaying, stepOnce]);
+  }, [isPlaying, step, stepOnce, trainSet.length]);
 
   const targets = useMemo(
     () => probeSet.map(point => ({ x: point.v[0], y: point.v[1] })),
@@ -460,6 +466,20 @@ export default function TTTLinearRegression2DDemo() {
   const querySample = probeSet[queryIndex];
   const queryPred = querySample ? matVecMul(matrix, querySample.k) : [0, 0];
 
+  useEffect(() => {
+    const container = sequenceContainerRef.current;
+    const active = activeItemRef.current;
+    if (!container || !active) return;
+    const containerRect = container.getBoundingClientRect();
+    const activeRect = active.getBoundingClientRect();
+    const offsetLeft = activeRect.left - containerRect.left + container.scrollLeft;
+    const targetLeft = offsetLeft - (containerRect.width / 2 - activeRect.width / 2);
+    container.scrollTo({
+      left: targetLeft,
+      behavior: isPlaying ? 'smooth' : 'auto',
+    });
+  }, [currentIndex, isPlaying]);
+
   const handleTogglePlay = () => {
     setIsPlaying(prev => !prev);
   };
@@ -488,9 +508,9 @@ export default function TTTLinearRegression2DDemo() {
       <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div>
-            <h1 className="text-xl font-bold">Online SGD Linear Regression (2D)</h1>
+            <h1 className="text-xl font-bold">Delta-Net 2D TTT</h1>
             <p className="text-xs text-slate-500">
-              State matrix S_t (aka A) maps keys k to values v. Probe set is fixed; residual arrows shrink as fit improves.
+              State matrix S_t (aka A) maps keys k to values v. Update shown is DeltaNet-style error correction, not pure linear attention.
             </p>
           </div>
           <div className="text-xs text-slate-500 flex items-center gap-2">
@@ -509,12 +529,13 @@ export default function TTTLinearRegression2DDemo() {
             </div>
             <div className="text-[11px] text-slate-500">Highlight = current update</div>
           </div>
-          <div className="flex gap-3 overflow-x-auto pb-2">
+          <div ref={sequenceContainerRef} className="flex gap-3 overflow-x-auto pb-2">
             {trainSet.map((item, idx) => {
               const isActive = idx === currentIndex;
               return (
                 <div
                   key={item.id}
+                  ref={isActive ? activeItemRef : null}
                   className={`min-w-[170px] rounded-lg border px-3 py-2 text-[11px] font-mono ${
                     isActive
                       ? 'border-blue-500 bg-blue-50 text-blue-700 shadow-sm'
@@ -546,7 +567,8 @@ export default function TTTLinearRegression2DDemo() {
                 </button>
                 <button
                   onClick={handleStep}
-                  className="px-3 py-2 rounded-md bg-white border border-slate-200 text-xs font-semibold flex items-center gap-2 text-slate-600"
+                  disabled={step >= trainSet.length}
+                  className="px-3 py-2 rounded-md bg-white border border-slate-200 text-xs font-semibold flex items-center gap-2 text-slate-600 disabled:text-slate-300 disabled:border-slate-100"
                 >
                   <SkipForward size={14} />
                   Step
@@ -658,16 +680,19 @@ export default function TTTLinearRegression2DDemo() {
                 <VectorGrid title="e_t" data={lastErr} tone="text-rose-600" />
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <VectorGrid title="q (query)" data={querySample ? querySample.k : [0, 0]} tone="text-slate-600" />
-                <VectorGrid title="S_t q" data={queryPred} tone="text-orange-600" />
-                <VectorGrid title="v(q)" data={querySample ? querySample.v : [0, 0]} tone="text-blue-600" />
+                <VectorGrid title="q (probe key)" data={querySample ? querySample.k : [0, 0]} tone="text-slate-600" />
+                <VectorGrid title="S_t q (prediction)" data={queryPred} tone="text-orange-600" />
+                <VectorGrid title="v(q) (target)" data={querySample ? querySample.v : [0, 0]} tone="text-blue-600" />
               </div>
               <div className="text-xs text-slate-500">
                 <InlineMath math={'\\Delta S_t = \\eta (v_t - S_{t-1} k_t) k_t^{\\top}'} /> ·{' '}
                 <InlineMath math={'S_t = S_{t-1} + \\Delta S_t'} />
               </div>
               <div className="text-[11px] text-slate-500">
-                k_t / v_t are the online update pair; q is a probe key used for the readout.
+                DeltaNet/online SGD update. Pure linear attention would be <InlineMath math={'S_t = S_{t-1} + \\eta v_t k_t^{\\top}'} />.
+              </div>
+              <div className="text-[11px] text-slate-500">
+                Intuition: the outer product <InlineMath math={'v_t k_t^{\\top}'} /> encodes how strongly this key should point toward this value across all directions.
               </div>
             </div>
 
@@ -676,7 +701,7 @@ export default function TTTLinearRegression2DDemo() {
               <div className="text-xs text-slate-600 space-y-2">
                 <BlockMath math={'\\mathcal{L}(S) = \\lVert S k - v \\rVert^2'} />
                 <div className="text-[11px] text-slate-500">
-                  Online SGD uses one key/value pair at a time; the probe plot stays fixed across steps.
+                  DeltaNet update = one-step SGD on reconstruction error. Probe plot stays fixed across steps.
                 </div>
               </div>
             </div>

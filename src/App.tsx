@@ -38,7 +38,7 @@ const tabs: TabConfig[] = [
   // { id: 'linear-attention-updates', label: 'Linear Attention Updates', component: LinearAttentionUpdatesDemo },
   { id: 'ttt', label: 'TTT', component: TTTDemo },
   { id: 'ttt-linear-regression', label: 'TTT Linear Regression (1D)', component: TTTLinearRegressionDemo },
-  { id: 'ttt-linear-regression-2d', label: 'Online SGD Linear Regression (2D)', component: TTTLinearRegression2DDemo },
+  { id: 'ttt-linear-regression-2d', label: 'Delta-Net 2D TTT', component: TTTLinearRegression2DDemo },
 ]
 
 function App() {
