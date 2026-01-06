@@ -1,3 +1,4 @@
+import type { MouseEvent } from 'react'
 import 'katex/dist/katex.min.css'
 import { BlockMath, InlineMath } from 'react-katex'
 
@@ -38,9 +39,29 @@ function EquationBlock({ label, math }: { label?: string; math: string }) {
 }
 
 export default function LandingPage() {
+  const tocOffset = 24
+  const tocTop = 'calc(var(--tab-header-height, 72px) + 1.5rem)'
+
+  const getHeaderHeight = () => {
+    if (typeof window === 'undefined') return 72
+    const raw = getComputedStyle(document.documentElement).getPropertyValue('--tab-header-height')
+    const parsed = parseFloat(raw)
+    return Number.isFinite(parsed) ? parsed : 72
+  }
+
+  const handleTocClick = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
+    event.preventDefault()
+    const target = document.getElementById(id)
+    if (!target) return
+    const headerHeight = getHeaderHeight()
+    const top = target.getBoundingClientRect().top + window.scrollY - headerHeight - tocOffset
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    window.scrollTo({ top, behavior: prefersReducedMotion ? 'auto' : 'smooth' })
+  }
+
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[var(--paper)] text-[var(--ink)] font-[var(--font-body)]">
-      <div className="pointer-events-none absolute inset-0 z-0">
+    <div className="relative min-h-screen bg-[var(--paper)] text-[var(--ink)] font-[var(--font-body)]">
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         <div className="absolute -top-24 right-[-120px] h-72 w-72 rounded-full bg-emerald-200/50 blur-3xl" />
         <div className="absolute bottom-[-120px] left-[-80px] h-80 w-80 rounded-full bg-amber-200/50 blur-3xl" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.9)_0%,_rgba(247,241,232,0.7)_45%,_rgba(239,229,216,0.6)_100%)]" />
@@ -249,8 +270,8 @@ z_i &= z_{i-1} + \phi(k_i)
               <p className={paragraphClass}>
                 With <InlineMath math="S_i = \sum_{j \le i} \phi(k_j) v_j^\top" />, you can
                 interpret <InlineMath math="S_i" /> as a data-dependent weight matrix. Given a
-                query feature <InlineMath math="\\phi(q_i)" />, the model computes{' '}
-                <InlineMath math="\\phi(q_i)^\\top S_i" />, meaning it applies weights constructed
+                query feature <InlineMath math="\phi(q_i)" />, the model computes{' '}
+                <InlineMath math="\phi(q_i)^\top S_i" />, meaning it applies weights constructed
                 online from the sequence.
               </p>
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -414,7 +435,7 @@ S_i &= S_{i-1} + \beta_i \phi(k_i) (v_i - \bar{v}_i)^\top
           </article>
 
           <aside className="hidden lg:block">
-            <div className="sticky top-24 space-y-6">
+            <div className="sticky space-y-6 z-0" style={{ top: tocTop }}>
               <div className="rounded-2xl border border-black/10 bg-white/70 p-5 shadow-sm">
                 <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-[var(--ink-muted)]">
                   On this page
@@ -425,6 +446,7 @@ S_i &= S_{i-1} + \beta_i \phi(k_i) (v_i - \bar{v}_i)^\top
                       <a
                         href={`#${item.id}`}
                         className="transition-colors hover:text-[var(--accent-strong)]"
+                        onClick={(event) => handleTocClick(event, item.id)}
                       >
                         {item.label}
                       </a>

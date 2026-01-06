@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef } from 'react'
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom'
 import LinearTransformerDemo from './demos/fwp'
 import HopfieldTransformerTutorial from './demos/modern-hopfield'
@@ -24,10 +25,33 @@ const routes = [
 ]
 
 function App() {
+  const headerRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    const header = headerRef.current
+    if (!header) return
+
+    const updateHeaderHeight = () => {
+      const height = header.getBoundingClientRect().height
+      document.documentElement.style.setProperty('--tab-header-height', `${height}px`)
+    }
+
+    updateHeaderHeight()
+
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', updateHeaderHeight)
+      return () => window.removeEventListener('resize', updateHeaderHeight)
+    }
+
+    const observer = new ResizeObserver(updateHeaderHeight)
+    observer.observe(header)
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Tab Navigation */}
-      <div className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-10">
+      <div ref={headerRef} className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-10">
         <div className="max-w-full mx-auto">
           <div className="flex">
             {routes.map((route) => (
