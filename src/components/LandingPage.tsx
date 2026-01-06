@@ -46,7 +46,7 @@ export default function LandingPage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.9)_0%,_rgba(247,241,232,0.7)_45%,_rgba(239,229,216,0.6)_100%)]" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-6xl px-6 py-16 lg:py-20">
+      <div className="relative z-0 mx-auto max-w-6xl px-6 py-16 lg:py-20">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_260px]">
           <article className="space-y-12">
             <header className="space-y-6">
